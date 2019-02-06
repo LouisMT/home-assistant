@@ -33,6 +33,7 @@ SERVICE_RESUME_PROGRAM = 'lyric_resume_program'
 SERVICE_RESET_AWAY = 'lyric_reset_away'
 STATE_HEAT_COOL = 'heat-cool'
 HOLD_NO_HOLD = 'NoHold'
+HOLD_TEMPORARY_HOLD = 'TemporaryHold'
 
 SUPPORT_FLAGS = (SUPPORT_TARGET_TEMPERATURE | SUPPORT_TARGET_TEMPERATURE_HIGH |
                  SUPPORT_TARGET_TEMPERATURE_LOW | SUPPORT_OPERATION_MODE |
@@ -224,6 +225,7 @@ class LyricThermostat(ClimateDevice):
         else:
             temp = kwargs.get(ATTR_TEMPERATURE)
         _LOGGER.debug("Lyric set_temperature-output-value=%s", temp)
+        self.device.thermostatSetpointStatus = HOLD_TEMPORARY_HOLD
         self.device.temperatureSetpoint = temp
 
     def set_operation_mode(self, operation_mode):
