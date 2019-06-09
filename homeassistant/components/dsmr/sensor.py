@@ -12,6 +12,7 @@ from homeassistant.const import (
 from homeassistant.core import CoreState
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
+from homeassistant.util import slugify
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -24,6 +25,8 @@ DEFAULT_PORT = '/dev/ttyUSB0'
 DEFAULT_PRECISION = 3
 
 DOMAIN = 'dsmr'
+
+ENTITY_ID_FORMAT = DOMAIN + '.{}'
 
 ICON_GAS = 'mdi:fire'
 ICON_POWER = 'mdi:flash'
@@ -237,6 +240,7 @@ class DSMREntity(Entity):
         self._name = name
         self._obis = obis
         self._config = config
+        self.entity_id = ENTITY_ID_FORMAT.format(slugify(name))
         self.telegram = {}
 
     def get_dsmr_object_attr(self, attribute):
