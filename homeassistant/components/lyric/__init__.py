@@ -7,7 +7,7 @@ from datetime import timedelta
 import voluptuous as vol
 from lyric import Lyric
 
-from homeassistant.components.lyric import config_flow
+from custom_components.lyric import config_flow
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_TOKEN
 from homeassistant.helpers import config_validation as cv, config_entry_oauth2_flow
@@ -66,6 +66,11 @@ async def async_setup(hass, config):
 
 async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool:
     """Set up Lyric from a config entry."""
+    if "auth_implementation" not in entry.data:
+        hass.config_entries.async_update_entry(
+            entry, data={**entry.data, "auth_implementation": DOMAIN}
+        )
+
     implementation = await config_entry_oauth2_flow.async_get_config_entry_implementation(
         hass, entry
     )
